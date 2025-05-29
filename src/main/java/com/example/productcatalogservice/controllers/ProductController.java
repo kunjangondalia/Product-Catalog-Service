@@ -1,6 +1,7 @@
 package com.example.productcatalogservice.controllers;
 
 
+import com.example.productcatalogservice.dtos.ExceptionDto;
 import com.example.productcatalogservice.dtos.ProductDto;
 import com.example.productcatalogservice.exceptions.ProductNotFoundException;
 import com.example.productcatalogservice.models.Product;
@@ -19,7 +20,6 @@ import java.util.*;
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
     ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -58,5 +58,13 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable int id){
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionDto> handleRuntimeException(){
+        ExceptionDto exceptionDto = new ExceptionDto();
+        exceptionDto.setMessage("Handling Exception within Controller");
+        exceptionDto.setResolutionDetails("You need to pay everything you have to resolve this problem");
+        return new ResponseEntity<>(exceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
