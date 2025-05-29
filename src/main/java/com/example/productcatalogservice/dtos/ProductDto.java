@@ -1,20 +1,17 @@
 package com.example.productcatalogservice.dtos;
 
-
-import com.example.productcatalogservice.models.Category;
 import lombok.Getter;
 import lombok.Setter;
-
 
 @Getter
 @Setter
 public class ProductDto {
 
-    private int id;
-    private String name;
+    private Long id;
+    private String title;
     private String description;
-    private double price;
-    private String imageUrl;
-    private Category category;
+    private Double price;
+    private String image;
+    private String category;
 
 }

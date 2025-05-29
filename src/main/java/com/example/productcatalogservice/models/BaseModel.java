@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 public abstract class BaseModel {
 
-    private int id;
+    private Long id;
     private Date createdAt;
     private Date updatedAt;
     private State state;
