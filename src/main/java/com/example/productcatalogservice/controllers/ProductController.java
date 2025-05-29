@@ -2,9 +2,11 @@ package com.example.productcatalogservice.controllers;
 
 
 import com.example.productcatalogservice.dtos.ProductDto;
+import com.example.productcatalogservice.exceptions.ProductNotFoundException;
 import com.example.productcatalogservice.models.Product;
 import com.example.productcatalogservice.services.FakeStoreProductService;
 import com.example.productcatalogservice.services.ProductService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -25,9 +27,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductDetailsById(@PathVariable long id){
-        Product product = productService.getSingleProduct(id);
-        return product;
+    public ResponseEntity<Product> getProductDetailsById(@PathVariable long id){
+
+        ResponseEntity<Product> responseEntity = new ResponseEntity<>(
+                productService.getSingleProduct(id),
+                HttpStatus.OK
+        );
+
+        return responseEntity;
     }
 
     @GetMapping("/{id}/{amount}")
@@ -39,7 +46,7 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() throws ProductNotFoundException {
         return productService.getAllProducts();
     }
 

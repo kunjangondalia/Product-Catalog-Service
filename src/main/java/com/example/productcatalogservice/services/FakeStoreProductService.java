@@ -1,6 +1,7 @@
 package com.example.productcatalogservice.services;
 
 import com.example.productcatalogservice.dtos.FakeStoreProductDto;
+import com.example.productcatalogservice.exceptions.ProductNotFoundException;
 import com.example.productcatalogservice.models.Category;
 import com.example.productcatalogservice.models.Product;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts() throws ProductNotFoundException {
         ResponseEntity<FakeStoreProductDto[]> productDtoResponseEntity = restTemplate.getForEntity(
                 "https://fakestoreapi.com/products",
                 FakeStoreProductDto[].class
@@ -39,6 +40,9 @@ public class FakeStoreProductService implements ProductService{
 
         FakeStoreProductDto[] fakeStoreProductDtos = productDtoResponseEntity.getBody();
         List<Product> products = new ArrayList<>();
+        if(fakeStoreProductDtos != null){
+            throw new ProductNotFoundException("Product Not found");
+        }
         for (FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
             Product product = convertProductDtoToProduct(fakeStoreProductDto);
             products.add(product);
