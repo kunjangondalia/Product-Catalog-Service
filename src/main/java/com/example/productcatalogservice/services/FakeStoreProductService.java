@@ -40,7 +40,7 @@ public class FakeStoreProductService implements ProductService{
 
         FakeStoreProductDto[] fakeStoreProductDtos = productDtoResponseEntity.getBody();
         List<Product> products = new ArrayList<>();
-        if(fakeStoreProductDtos != null){
+        if(fakeStoreProductDtos == null){
             throw new ProductNotFoundException("Product Not found");
         }
         for (FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
