@@ -3,12 +3,14 @@ package com.example.productcatalogservice.controllers;
 
 import com.example.productcatalogservice.dtos.ExceptionDto;
 import com.example.productcatalogservice.dtos.ProductDto;
+import com.example.productcatalogservice.exceptions.CategoryNotFoundException;
 import com.example.productcatalogservice.exceptions.ProductNotFoundException;
 import com.example.productcatalogservice.models.Product;
 import com.example.productcatalogservice.services.FakeStoreProductService;
 import com.example.productcatalogservice.services.ProductService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,12 @@ public class ProductController {
 
     ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductDetailsById(@PathVariable long id){
+    public ResponseEntity<Product> getProductDetailsById(@PathVariable long id) throws ProductNotFoundException{
 
         ResponseEntity<Product> responseEntity = new ResponseEntity<>(
                 productService.getSingleProduct(id),
@@ -51,12 +53,14 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ProductDto createProduct(@RequestBody ProductDto productDto){
-        return productDto;
+    public Product createProduct(@RequestBody Product product) throws CategoryNotFoundException{
+        product = productService.createProduct(product);
+        return product;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) throws ProductNotFoundException{
+        productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

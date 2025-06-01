@@ -17,7 +17,7 @@ public class Category extends BaseModel{
     private String title;
     private String description;
 
-    @OneToMany(fetch = jakarta.persistence.FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
-    private List<Product> products;
+//    @OneToMany(fetch = jakarta.persistence.FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
+//    private List<Product> products;
 
 }
